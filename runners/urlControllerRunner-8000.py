@@ -7,7 +7,7 @@ if __name__ == '__main__':
 
     #计数器
     click=0
-    command=pd.read_csv("/home/molamola/桌面/数据集/ecc/ecc-command.csv")['0'].values
+    command=pd.read_csv("/home/molamola/桌面/数据集/ecc/ecc-command-2.csv")['0'].values
 
     #加载可用代理
     ips=pd.read_csv("/home/molamola/桌面/数据集/ecc/proxies.csv")['0'].values
@@ -16,10 +16,11 @@ if __name__ == '__main__':
         proxy={'https': 'https://'+ip}
         proxies.append(proxy)
     #获得控制码，进行爬取
-    #控制循环变量
-    print("请输入开始爬取的点：")
-    command_i=int(input())
 
+    '''控制循环变量'''
+    command_i=1744
+    end_i=2
+    400
     #记录下标志点
     flag=str(command_i)
     proxy_i=0
@@ -28,6 +29,11 @@ if __name__ == '__main__':
     db=saver.connect_mysql()
     while True:
         #获得各自的代理和控制码
+        if command_i==end_i:
+            #结束
+            print("爬虫结束-----------------****** > . <")
+            break
+
         command_code=command[command_i]
         proxy=proxies[proxy_i]
         #获得url
@@ -39,6 +45,9 @@ if __name__ == '__main__':
         except Exception as err:
             print("failed")
             print(err)
+            if str(err) =='list index out of range':
+                # 控制码加一
+                command_i += 1
             #代理加一
             proxy_i=(proxy_i+1)%len(proxies)
         else:
